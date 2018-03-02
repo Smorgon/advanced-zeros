@@ -1,23 +1,29 @@
 module.exports = function getZerosCount(number, base) {
-    let sum = 0;
     let i = 2;
-    let factorBase = base;
-    while (i < factorBase) {
-        if (factorBase % i === 0) {
-            factorBase /= i;
-            if (factorBase === i) {
-                factorBase = factorBase + i - 1;
-                break;
-            }
-        } else {
-            i++;
-        }
-    }
-    let factor = factorBase;
-    while (factor <= number) {
-        sum += Math.trunc(number / factor);
-        factor *= factorBase;
-    }
-
-    return sum;
+	let factorBase = base;
+	let arr = [];
+	while (i <= factorBase) {
+		if (factorBase % i === 0) {
+			if (arr[i] === undefined) {
+				arr[i] = 1;
+			} else {
+				arr[i] = arr[i] + 1;
+			}
+			factorBase /= i;
+		} else {
+			i++;
+		}
+	}
+	let res = [];
+	arr.forEach(function(item, i, arr) {
+		let factor = i;
+		let sum = 0;
+		while (factor < number) {
+			sum += Math.trunc(number / factor);
+			factor *= i;
+		}
+		res.push(Math.trunc(sum / item));
+	});
+    
+    return Math.min.apply(null, res);
 }
